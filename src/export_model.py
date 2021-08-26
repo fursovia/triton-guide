@@ -9,8 +9,8 @@ import_module_and_submodules('allennlp_models')
 
 
 ARCHIVE_PATH = "/Users/i.fursov/Documents/triton_guide/basic_stanford_sentiment_treebank-2020.06.09.tar.gz"
-SAVE_TO = "/Users/i.fursov/Documents/triton_guide/traced_model.pt"
-ONNX_SAVE_TO = "/Users/i.fursov/Documents/triton_guide/traced_model.onnx"
+SAVE_TO = "/Users/i.fursov/Documents/triton_guide/model_registry/classifier_ts/1/model.pt"
+ONNX_SAVE_TO = "/Users/i.fursov/Documents/triton_guide/model_registry/classifier_onnx/1/model.onnx"
 
 
 class TracableModel(torch.nn.Module):
