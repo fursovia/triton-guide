@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import torch
 from allennlp.nn import util
 from allennlp.models import Model
@@ -7,10 +9,13 @@ from allennlp.data.tokenizers.spacy_tokenizer import SpacyTokenizer
 from allennlp.common.util import import_module_and_submodules
 import_module_and_submodules('allennlp_models')
 
+ARCHIVE_PATH = "https://storage.googleapis.com/allennlp-public-models/basic_stanford_sentiment_treebank-2020.06.09.tar.gz"
+ROOT_DIR = Path(__file__).parent.parent.resolve()
 
-ARCHIVE_PATH = "/Users/i.fursov/Documents/triton_guide/basic_stanford_sentiment_treebank-2020.06.09.tar.gz"
-SAVE_TO = "/Users/i.fursov/Documents/triton_guide/model_registry/classifier_ts/1/model.pt"
-ONNX_SAVE_TO = "/Users/i.fursov/Documents/triton_guide/model_registry/classifier_onnx/1/model.onnx"
+SAVE_TO = ROOT_DIR / "model_registry/classifier_ts/1/model.pt"
+SAVE_TO.mkdir(exist_ok=True, parents=True)
+ONNX_SAVE_TO = ROOT_DIR / "model_registry/classifier_onnx/1/model.onnx"
+ONNX_SAVE_TO.mkdir(exist_ok=True, parents=True)
 
 
 class TracableModel(torch.nn.Module):
@@ -41,10 +46,10 @@ def main(archive_path: str = ARCHIVE_PATH, device: int = -1):
     model_inputs = util.move_to_device(dataset.as_tensor_dict(), device)['tokens']['tokens']
 
     module = torch.jit.trace(tracable_model, example_inputs=model_inputs['tokens'], strict=True, )
-    module.save(SAVE_TO)
+    module.save(st(SAVE_TO))
 
     torch.onnx.export(
-        tracable_model, model_inputs['tokens'], ONNX_SAVE_TO, input_names=['input_1'], output_names=['output_1']
+        tracable_model, model_inputs['tokens'], str(ONNX_SAVE_TO), input_names=['input_1'], output_names=['output_1']
     )
 
 
