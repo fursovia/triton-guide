@@ -46,7 +46,7 @@ def main(archive_path: str = ARCHIVE_PATH, device: int = -1):
     model_inputs = util.move_to_device(dataset.as_tensor_dict(), device)['tokens']['tokens']
 
     module = torch.jit.trace(tracable_model, example_inputs=model_inputs['tokens'], strict=True, )
-    module.save(st(SAVE_TO))
+    module.save(str(SAVE_TO))
 
     torch.onnx.export(
         tracable_model, model_inputs['tokens'], str(ONNX_SAVE_TO), input_names=['input_1'], output_names=['output_1']
